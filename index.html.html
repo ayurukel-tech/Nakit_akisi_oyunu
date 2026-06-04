@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nakit Akışı: Finansal Özgürlük Oyunu</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', serif; background: #0a0a0a; color: #f0e6c8; min-height: 100vh; }
+
+  /* HEADER */
+  .header { background: #0f0f05; border-bottom: 1px solid #2a2a10; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-size: 1.2rem; color: #d4a017; font-weight: bold; }
+  .logo span { color: #4a7c3f; }
+  .header-btns { display: flex; gap: 10px; }
+  .btn { padding: 8px 18px; border-radius: 4px; font-size: 13px; cursor: pointer; border: 1px solid; transition: all 0.2s; }
+  .btn-outline { background: transparent; border-color: #d4a017; color: #d4a017; }
+  .btn-outline:hover { background: #1a1200; }
+  .btn-solid { background: #d4a017; border-color: #d4a017; color: #0a0a00; font-weight: bold; }
+  .btn-solid:hover { background: #e5b020; }
+
+  /* HERO */
+  .hero { text-align: center; padding: 4rem 2rem; background: #080808; border-bottom: 1px solid #1a1a0a; }
+  .hero-tag { font-size: 11px; letter-spacing: 4px; color: #5a7a50; text-transform: uppercase; margin-bottom: 1rem; }
+  .hero h1 { font-size: 3rem; color: #d4a017; line-height: 1.1; margin-bottom: 1rem; }
+  .hero h1 em { color: #4a7c3f; font-style: normal; }
+  .hero p { font-size: 1.1rem; color: #9a8a6a; max-width: 600px; margin: 0 auto 2rem; line-height: 1.7; }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  /* OYUN ALANI */
+  .oyun-container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+
+  /* HUD */
+  .hud { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  .hud-kart { background: #0d1205; border: 1px solid #1e2a15; border-radius: 8px; padding: 14px; text-align: center; }
+  .hud-etiket { font-size: 10px; letter-spacing: 2px; color: #4a6a40; text-transform: uppercase; margin-bottom: 6px; }
+  .hud-deger { font-size: 22px; font-weight: bold; }
+  .yesil { color: #5aaa4a; }
+  .kirmizi { color: #aa4a3a; }
+  .altin { color: #d4a017; }
+  .mavi { color: #4a8aaa; }
+
+  /* TAHTA */
+  .tahta { background: #0a1205; border: 1px solid #1e3a10; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .tahta-baslik { font-size: 11px; letter-spacing: 3px; color: #4a7c3f; text-transform: uppercase; margin-bottom: 1rem; }
+  .tahta-izgara { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 1.5rem; }
+  .hucre { background: #080d05; border: 1px solid #162010; border-radius: 5px; padding: 8px 4px; text-align: center; font-size: 11px; cursor: pointer; transition: all 0.15s; }
+  .hucre:hover { transform: translateY(-2px); }
+  .hucre.gelir { border-color: #2a5a20; color: #6aaa5a; }
+  .hucre.gider { border-color: #5a2a1a; color: #aa6a5a; }
+  .hucre.varlik { border-color: #1a5a3a; color: #5aaa8a; }
+  .hucre.yukumluluk { border-color: #5a1a3a; color: #aa5a8a; }
+  .hucre.oyuncu { background: #d4a017; border-color: #d4a017; color: #0a0a00; font-weight: bold; font-size: 14px; }
+  .hucre-tur { font-size: 9px; margin-top: 3px; opacity: 0.7; }
+
+  /* AKSİYON */
+  .aksiyon-alani { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+  .aksiyon-btn { background: #0a1205; border: 1px solid #2a4a20; border-radius: 8px; padding: 14px; cursor: pointer; transition: all 0.2s; color: #6aaa5a; font-size: 14px; text-align: center; font-family: inherit; }
+  .aksiyon-btn:hover { background: #0f2010; border-color: #4a7a3a; }
+  .aksiyon-btn.birincil { border-color: #d4a017; color: #d4a017; background: #0f0d00; }
+  .aksiyon-btn.birincil:hover { background: #1a1200; }
+  .aksiyon-btn.tehlike { border-color: #6a2a2a; color: #aa5a5a; background: #0f0808; }
+  .aksiyon-btn.tehlike:hover { background: #1a0d0d; }
+
+  /* KART */
+  .kart-alani { background: #12080f; border: 1px solid #3a1a3a; border-radius: 10px; padding: 1.5rem; }
+  .kart-tur { font-size: 10px; letter-spacing: 2px; color: #8a5a9a; text-transform: uppercase; margin-bottom: 8px; }
+  .kart-metin { font-size: 14px; color: #d0b0d0; line-height: 1.7; margin-bottom: 8px; }
+  .kart-etki { font-size: 13px; color: #d4a017; }
+
+  /* BILGI PANELI */
+  .bilgi-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+  .bilgi-kart { background: #0a0f06; border: 1px solid #1e2a15; border-radius: 8px; padding: 14px; }
+  .bilgi-baslik { font-size: 11px; letter-spacing: 1px; color: #5a8a50; margin-bottom: 8px; text-transform: uppercase; }
+  .bilgi-satir { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; border-bottom: 1px solid #0f1a0a; }
+  .bilgi-satir:last-child { border-bottom: none; }
+  .bilgi-ad { color: #6a8a60; }
+  .bilgi-deger { color: #a0c090; }
+
+  /* OGRETI */
+  .ogretici { background: #0a0d10; border: 1px solid #1a2a3a; border-radius: 10px; padding: 1.5rem; margin-top: 1rem; }
+  .ogretici-baslik { font-size: 12px; letter-spacing: 2px; color: #5a8aaa; margin-bottom: 10px; text-transform: uppercase; }
+  .ogretici-metin { font-size: 13px; color: #8aaac0; line-height: 1.7; }
+
+  /* ILERLEME */
+  .ilerleme-wrap { margin-bottom: 1.5rem; }
+  .ilerleme-baslik { font-size: 12px; color: #6a8a60; margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .ilerleme-bar { background: #0a1205; height: 8px; border-radius: 4px; overflow: hidden; }
+  .ilerleme-dolu { height: 100%; background: #4a7c3f; border-radius: 4px; transition: width 0.5s ease; }
+
+  /* MODAL */
+  .modal-arkaplan { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center; }
+  .modal-arkaplan.aktif { display: flex; }
+  .modal { background: #0f0f05; border: 1px solid #3a3a1a; border-radius: 12px; padding: 2rem; max-width: 500px; width: 90%; }
+  .modal h2 { color: #d4a017; margin-bottom: 1rem; }
+  .modal p { color: #9a8a6a; line-height: 1.7; margin-bottom: 1rem; font-size: 14px; }
+  .modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* FİYATLANDIRMA */
+  .fiyat-bolum { background: #080808; border-top: 1px solid #1a1a0a; padding: 3rem 2rem; text-align: center; }
+  .fiyat-baslik { font-size: 1.8rem; color: #d4a017; margin-bottom: 0.5rem; }
+  .fiyat-altyazi { color: #6a6a4a; font-size: 14px; margin-bottom: 2rem; }
+  .fiyat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 800px; margin: 0 auto 2rem; }
+  .fiyat-kart { background: #0d0d05; border: 1px solid #2a2a15; border-radius: 10px; padding: 1.5rem; position: relative; }
+  .fiyat-kart.one-cikan { border-color: #d4a017; }
+  .one-cikan-rozet { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #d4a017; color: #0a0a00; font-size: 10px; letter-spacing: 2px; padding: 4px 12px; border-radius: 20px; white-space: nowrap; font-weight: bold; }
+  .plan-ad { font-size: 11px; letter-spacing: 2px; color: #7a7a5a; text-transform: uppercase; margin-bottom: 8px; margin-top: 4px; }
+  .plan-fiyat { font-size: 2.2rem; color: #d4a017; }
+  .plan-periyot { font-size: 12px; color: #5a5a4a; margin-bottom: 1rem; }
+  .plan-ozellikler { list-style: none; text-align: left; margin-bottom: 1rem; }
+  .plan-ozellikler li { font-size: 13px; color: #8a8a6a; padding: 5px 0; border-bottom: 1px solid #1a1a0a; }
+  .plan-ozellikler li:last-child { border-bottom: none; }
+  .plan-ozellikler li::before { content: "✓ "; color: #4a7c3f; }
+  .plan-btn { width: 100%; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 13px; letter-spacing: 1px; font-family: inherit; transition: all 0.2s; }
+
+  /* ALT BILGI */
+  .alt-bilgi { background: #050505; border-top: 1px solid #1a1a0a; padding: 2rem; text-align: center; color: #3a3a2a; font-size: 12px; }
+  .alt-bilgi a { color: #5a5a3a; text-decoration: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .hud { grid-template-columns: repeat(2, 1fr); }
+    .tahta-izgara { grid-template-columns: repeat(4, 1fr); }
+    .fiyat-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2rem; }
+    .aksiyon-alani { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">Nakit Akışı: <span>Finansal Özgürlük</span></div>
+  <div class="header-btns">
+    <button class="btn btn-outline" onclick="modalAc('giris')">Giriş Yap</button>
+    <button class="btn btn-solid" onclick="modalAc('kayit')">Ücretsiz Başla</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Türkiye'nin İlk Finansal Özgürlük Oyunu</div>
+  <h1>Parayı çalıştırmayı<br><em>oynayarak</em> öğren</h1>
+  <p>Varlık mı yoksa yükümlülük mü aldığını anlayan, nakit akışını yöneten ve "fare yarışı"ndan çıkan insanların oyunu.</p>
+  <div class="hero-btns">
+    <button class="btn btn-solid" onclick="oyunuBaslat()">▶ Ücretsiz Oyna</button>
+    <button class="btn btn-outline" onclick="modalAc('nasil')">Nasıl Oynanır?</button>
+  </div>
+</div>
+
+<!-- OYUN ALANI -->
+<div class="oyun-container">
+
+  <!-- İLERLEME -->
+  <div class="ilerleme-wrap">
+    <div class="ilerleme-baslik">
+      <span>Finansal Özgürlüğe İlerleme</span>
+      <span id="ilerleme-yuzde">0%</span>
+    </div>
+    <div class="ilerleme-bar"><div class="ilerleme-dolu" id="ilerleme-dolu" style="width:0%"></div></div>
+  </div>
+
+  <!-- HUD -->
+  <div class="hud">
+    <div class="hud-kart"><div class="hud-etiket">Aylık Gelir</div><div class="hud-deger yesil" id="gelir">₺8.500</div></div>
+    <div class="hud-kart"><div class="hud-etiket">Aylık Gider</div><div class="hud-deger kirmizi" id="gider">₺6.200</div></div>
+    <div class="hud-kart"><div class="hud-etiket">Nakit Akışı</div><div class="hud-deger altin" id="nakit">₺2.300</div></div>
+    <div class="hud-kart"><div class="hud-etiket">Toplam Varlık</div><div class="hud-deger mavi" id="varlik">₺0</div></div>
+  </div>
+
+  <!-- TAHTA -->
+  <div class="tahta">
+    <div class="tahta-baslik">🎮 Nakit Akışı Tahtası</div>
+    <div class="tahta-izgara" id="tahta"></div>
+
+    <!-- AKSİYON BUTONLARI -->
+    <div class="aksiyon-alani">
+      <button class="aksiyon-btn birincil" onclick="kartCek('firsat')">🟡 Fırsat Kartı Çek</button>
+      <button class="aksiyon-btn" onclick="kartCek('pazar')">📈 Pazar Kartı Çek</button>
+      <button class="aksiyon-btn" onclick="kartCek('masraf')">💸 Masraf Kartı Çek</button>
+      <button class="aksiyon-btn tehlike" onclick="kartCek('kriz')">⚠️ Kriz Kartı Çek</button>
+    </div>
+  </div>
+
+  <!-- ÇEKILEN KART -->
+  <div class="kart-alani" id="kart-alani">
+    <div class="kart-tur">Oyun Başlıyor</div>
+    <div class="kart-metin">Çalışan olarak başlıyorsun. Amacın pasif gelirinle toplam giderini geçmek ve "fare yarışı"ndan çıkmak. Fırsat kartları çekerek varlık edinmeye başla!</div>
+    <div class="kart-etki">→ Hedef: Pasif Gelir ≥ Toplam Gider</div>
+  </div>
+
+  <!-- BİLGİ PANELİ -->
+  <div class="bilgi-panel" style="margin-top:1rem">
+    <div class="bilgi-kart">
+      <div class="bilgi-baslik">Varlıklarım</div>
+      <div id="varliklar-liste">
+        <div class="bilgi-satir"><span class="bilgi-ad">Henüz varlık yok</span><span class="bilgi-deger">₺0/ay</span></div>
+      </div>
+    </div>
+    <div class="bilgi-kart">
+      <div class="bilgi-baslik">Yükümlülüklerim</div>
+      <div id="yukumlulukler-liste">
+        <div class="bilgi-satir"><span class="bilgi-ad">Kira ödemesi</span><span class="bilgi-deger kirmizi">-₺2.000/ay</span></div>
+        <div class="bilgi-satir"><span class="bilgi-ad">Araba kredisi</span><span class="bilgi-deger kirmizi">-₺800/ay</span></div>
+        <div class="bilgi-satir"><span class="bilgi-ad">Kredi kartı</span><span class="bilgi-deger kirmizi">-₺500/ay</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÖĞRETİCİ PANEL -->
+  <div class="ogretici" id="ogretici">
+    <div class="ogretici-baslik">📖 Bu Tur Ne Öğretir?</div>
+    <div class="ogretici-metin" id="ogretici-metin">Zengin Baba'nın en önemli dersi: <strong>Varlık sana para getirir, yükümlülük senden para alır.</strong> Bir ev aldığında kira geliri sağlıyorsa varlıktır — ipotek ödüyorsan yükümlülüktür. Fırsat kartlarıyla varlık edinmeye başla!</div>
+  </div>
+</div>
+
+<!-- FİYATLANDIRMA -->
+<div class="fiyat-bolum">
+  <div class="fiyat-baslik">Finansal özgürlüğe tam erişim</div>
+  <div class="fiyat-altyazi">Ücretsiz planla başla, hazır olduğunda yükselt</div>
+  <div class="fiyat-grid">
+    <div class="fiyat-kart">
+      <div class="plan-ad">Ücretsiz</div>
+      <div class="plan-fiyat">₺0</div>
+      <div class="plan-periyot">sonsuza dek</div>
+      <ul class="plan-ozellikler">
+        <li>3 temel senaryo</li>
+        <li>Nakit akışı tahtası</li>
+        <li>Günlük 1 tam oyun</li>
+        <li>Topluluk forumu</li>
+      </ul>
+      <button class="plan-btn" style="background:transparent;border:1px solid #4a4a2a;color:#8a8a5a;" onclick="modalAc('kayit')">Ücretsiz Başla</button>
+    </div>
+    <div class="fiyat-kart one-cikan">
+      <div class="one-cikan-rozet">EN POPÜLER</div>
+      <div class="plan-ad">Pro</div>
+      <div class="plan-fiyat">₺149</div>
+      <div class="plan-periyot">/ ay • istediğin zaman iptal</div>
+      <ul class="plan-ozellikler">
+        <li>Sınırsız senaryo</li>
+        <li>Borsa simülatörü</li>
+        <li>Gayrimenkul modu</li>
+        <li>AI finansal danışman</li>
+        <li>Haftalık analiz raporu</li>
+        <li>Sertifika programı</li>
+      </ul>
+      <button class="plan-btn" style="background:#d4a017;border:1px solid #d4a017;color:#0a0a00;font-weight:bold;" onclick="modalAc('odeme')">Pro'ya Geç →</button>
+    </div>
+    <div class="fiyat-kart">
+      <div class="plan-ad">Yıllık</div>
+      <div class="plan-fiyat">₺990</div>
+      <div class="plan-periyot">/ yıl — 2 ay bedava!</div>
+      <ul class="plan-ozellikler">
+        <li>Pro'nun her şeyi</li>
+        <li>Aylık canlı webinar</li>
+        <li>1-1 mentor görüşmesi</li>
+        <li>Özel Discord kanalı</li>
+      </ul>
+      <button class="plan-btn" style="background:transparent;border:1px solid #aaaacc;color:#aaaacc;" onclick="modalAc('odeme')">Yıllık Al</button>
+    </div>
+  </div>
+</div>
+
+<!-- ALT BİLGİ -->
+<div class="alt-bilgi">
+  <p>© 2024 Nakit Akışı: Finansal Özgürlük Oyunu · <a href="#">Gizlilik</a> · <a href="#">Kullanım Şartları</a> · <a href="#">İletişim</a></p>
+  <p style="margin-top:8px">Bu platform finansal eğitim amaçlıdır. Yatırım tavsiyesi içermez.</p>
+</div>
+
+<!-- MODALLAR -->
+<div class="modal-arkaplan" id="modal">
+  <div class="modal" id="modal-icerik">
+    <h2 id="modal-baslik"></h2>
+    <p id="modal-metin"></p>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="modalKapat()">Kapat</button>
+      <button class="btn btn-solid" id="modal-aksiyon" onclick="modalKapat()">Tamam</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== OYUN VERİLERİ =====
+const kartlar = {
+  firsat: [
+    { metin: "Küçük bir daire piyasa değerinin altında satışa çıktı. Satın alıp kiraya vermek istiyor musun?", etki: "+₺2.500/ay kira geliri, -₺40.000 sermaye", ders: "Varlık: Sana para getiren her şey. Kira geliri pasif gelirdir — uyurken çalışır." },
+    { metin: "Bir arkadaşın küçük bir kafe açıyor. Yüzde 20 ortaklık teklif ediyor.", etki: "+₺1.200/ay temettü geliri, -₺15.000 sermaye", ders: "İşletme hissesi pasif gelir kaynağıdır. Emeğin olmadan para kazanırsın." },
+    { metin: "Midas üzerinden temettü hissesi almak istiyorsun. Güçlü bir banka hissesi uygun fiyata.", etki: "+₺800/ay temettü, -₺10.000 sermaye", ders: "Hisse senetleri en likit varlık türüdür. Kolayca alınıp satılabilir." },
+    { metin: "Bir arkadaşın seni çevrimiçi kurs yapımına ortak etmek istiyor.", etki: "+₺3.000/ay royalty geliri, -₺5.000 emek", ders: "Fikri mülkiyet en güçlü varlıktır. Bir kez yap, sonsuz sat." }
+  ],
+  pazar: [
+    { metin: "Borsa bu ay %18 yükseldi! Hisselerin değer kazandı.", etki: "Portföy değeri +%18 arttı", ders: "Piyasa dalgalanmaları normaldir. Uzun vadeli yatırımcı paniklemez." },
+    { metin: "Faiz oranları düştü. Gayrimenkul talebi arttı, kira gelirlerin yükseldi.", etki: "Kira gelirin +%15 arttı", ders: "Makroekonomik koşullar varlık değerlerini etkiler. Haberleri takip et." },
+    { metin: "Çalıştığın şirket zam yaptı. Maaşın arttı.", etki: "+₺1.000/ay aktif gelir", ders: "Aktif gelir iyidir ama tek başına yetmez. Pasif gelir inşa etmeye devam et." }
+  ],
+  masraf: [
+    { metin: "Arabanın motoru bozuldu. Acil tamir zorunlu.", etki: "-₺8.000 nakit (beklenmedik gider)", ders: "Acil fon şarttır! En az 3-6 aylık giderine eşit nakit rezervin olmalı." },
+    { metin: "Yıllık sigorta primlerini ödemek zorundasın.", etki: "-₺3.600 yıllık (₺300/ay)", ders: "Sigorta bir gider değil, risk yönetimidir. Hesabına katmalısın." },
+    { metin: "Çocuğun özel okul için kayıt istiyor.", etki: "-₺2.000/ay yeni sabit gider", ders: "Yaşam tarzı enflasyonu en büyük tuzaktır. Her yeni gideri sorgula." }
+  ],
+  kriz: [
+    { metin: "İşten çıkarıldın! Pasif gelirlerin seni kurtaracak mı?", etki: "Aktif gelir SIFIR. Pasif gelirin var mı?", ders: "İşte tam olarak neden pasif gelir gereklidir. Kiyosaki buna 'fare yarışından çıkış' der." },
+    { metin: "Kiracın kaçtı, 3 ay boş kalabilir. Kredi taksitini yine de ödemek zorundasın.", etki: "-₺9.000 beklenmedik kayıp (3 ay kira)", ders: "Yatırım her zaman risk içerir. Acil fon ve çeşitlillik şarttır." },
+    { metin: "Ekonomik kriz! Borsa %35 düştü. Panikte satar mısın?", etki: "Portföy değeri -%35. SAT mı, BEKLE mi?", ders: "Krizde satmak en büyük hatadır. Warren Buffett: 'Başkaları korkarken aç gözlü ol.'" }
+  ]
+};
+
+const tahta_hucreler = [
+  {tur:'gelir',ad:'Maaş'},{tur:'varlik',ad:'Kira Gel.'},{tur:'gider',ad:'Kira'},
+  {tur:'yukumluluk',ad:'Kredi'},{tur:'gelir',ad:'Temettü'},{tur:'oyuncu',ad:'👤'},
+  {tur:'gider',ad:'Gıda'},{tur:'varlik',ad:'Hisse'},{tur:'yukumluluk',ad:'Araba'},
+  {tur:'gelir',ad:'Serbest'},{tur:'gider',ad:'Sigorta'},{tur:'varlik',ad:'İşletme'},
+  {tur:'yukumluluk',ad:'Kart'},{tur:'gider',ad:'Ulaşım'},{tur:'gelir',ad:'Royalty'},
+  {tur:'varlik',ad:'Tahvil'},{tur:'gider',ad:'Sağlık'},{tur:'yukumluluk',ad:'İpotk'}
+];
+
+// ===== OYUN DURUMU =====
+let durum = {
+  gelir: 8500, gider: 6200, varlik: 0, pasifGelir: 0,
+  varliklar: [], yukumlulukler: [
+    {ad:'Kira ödemesi', miktar:2000},
+    {ad:'Araba kredisi', miktar:800},
+    {ad:'Kredi kartı', miktar:500}
+  ]
+};
+
+// ===== FONKSİYONLAR =====
+function tahtayiOlustur() {
+  const el = document.getElementById('tahta');
+  el.innerHTML = tahta_hucreler.map(h => `
+    <div class="hucre ${h.tur}">
+      ${h.ad}
+      <div class="hucre-tur">${h.tur}</div>
+    </div>
+  `).join('');
+}
+
+function hudGuncelle() {
+  const nakitAkisi = (durum.gelir + durum.pasifGelir) - durum.gider;
+  document.getElementById('gelir').textContent = '₺' + (durum.gelir + durum.pasifGelir).toLocaleString('tr-TR');
+  document.getElementById('gider').textContent = '₺' + durum.gider.toLocaleString('tr-TR');
+  document.getElementById('nakit').textContent = '₺' + nakitAkisi.toLocaleString('tr-TR');
+  document.getElementById('nakit').className = 'hud-deger ' + (nakitAkisi >= 0 ? 'altin' : 'kirmizi');
+  document.getElementById('varlik').textContent = '₺' + durum.varlik.toLocaleString('tr-TR');
+  const yuzde = Math.min(100, Math.round((durum.pasifGelir / durum.gider) * 100));
+  document.getElementById('ilerleme-dolu').style.width = yuzde + '%';
+  document.getElementById('ilerleme-yuzde').textContent = yuzde + '%';
+  if (yuzde >= 100) kazandin();
+}
+
+function varliklarGuncelle() {
+  const vEl = document.getElementById('varliklar-liste');
+  const yEl = document.getElementById('yukumlulukler-liste');
+  vEl.innerHTML = durum.varliklar.length ? durum.varliklar.map(v =>
+    `<div class="bilgi-satir"><span class="bilgi-ad">${v.ad}</span><span class="bilgi-deger yesil">+₺${v.miktar.toLocaleString('tr-TR')}/ay</span></div>`
+  ).join('') : '<div class="bilgi-satir"><span class="bilgi-ad">Henüz varlık yok</span><span class="bilgi-deger">₺0/ay</span></div>';
+  yEl.innerHTML = durum.yukumlulukler.map(y =>
+    `<div class="bilgi-satir"><span class="bilgi-ad">${y.ad}</span><span class="bilgi-deger kirmizi">-₺${y.miktar.toLocaleString('tr-TR')}/ay</span></div>`
+  ).join('');
+}
+
+function kartCek(tur) {
+  const havuz = kartlar[tur];
+  const kart = havuz[Math.floor(Math.random() * havuz.length)];
+  const turAdlar = {firsat:'🟡 Fırsat', pazar:'📈 Pazar', masraf:'💸 Masraf', kriz:'🔴 Kriz'};
+  document.getElementById('kart-alani').innerHTML = `
+    <div class="kart-tur">${turAdlar[tur]} Kartı</div>
+    <div class="kart-metin">${kart.metin}</div>
+    <div class="kart-etki">→ ${kart.etki}</div>
+  `;
+  document.getElementById('ogretici-metin').textContent = kart.ders;
+
+  if (tur === 'firsat') {
+    const miktar = Math.floor(Math.random() * 2000 + 500);
+    durum.pasifGelir += miktar;
+    durum.varlik += miktar * 12;
+    durum.varliklar.push({ad: 'Yeni varlık', miktar: miktar});
+  } else if (tur === 'pazar') {
+    durum.varlik += Math.floor(Math.random() * 5000 + 1000);
+    durum.gelir += Math.floor(Math.random() * 500 + 200);
+  } else if (tur === 'masraf') {
+    const ek = Math.floor(Math.random() * 500 + 200);
+    durum.gider += ek;
+    durum.yukumlulukler.push({ad: 'Yeni masraf', miktar: ek});
+  } else if (tur === 'kriz') {
+    durum.varlik = Math.max(0, durum.varlik - Math.floor(Math.random() * 8000 + 2000));
+    durum.gelir = Math.max(0, durum.gelir - Math.floor(Math.random() * 2000 + 500));
+  }
+  hudGuncelle();
+  varliklarGuncelle();
+}
+
+function kazandin() {
+  document.getElementById('modal-baslik').textContent = '🏆 TEBRİKLER! Finansal Özgürlüğe Ulaştın!';
+  document.getElementById('modal-metin').textContent = 'Pasif gelirlerin giderlerini geçti! "Fare yarışı"ndan çıktın. Gerçek hayatta da aynı stratejiyi uygula: varlık edin, borçtan kaç, pasif gelir inşa et.';
+  document.getElementById('modal-aksiyon').textContent = 'Yeniden Oyna';
+  document.getElementById('modal').classList.add('aktif');
+}
+
+function oyunuBaslat() {
+  document.querySelector('.oyun-container').scrollIntoView({behavior:'smooth'});
+}
+
+function modalAc(tip) {
+  const icerikler = {
+    giris: ['Giriş Yap', 'E-posta ve şifrenle giriş yap. (Demo moddasın — gerçek auth için backend kurulumu gerekir)'],
+    kayit: ['Ücretsiz Kayıt Ol', 'E-posta adresinle ücretsiz hesap oluştur. Kredi kartı gerekmez. 3 senaryo tamamen ücretsiz!'],
+    odeme: ['Pro\'ya Geç', 'Güvenli ödeme için iyzico altyapısını kullanıyoruz. ₺149/ay, istediğin zaman iptal.'],
+    nasil: ['Nasıl Oynanır?', '4 kart türü var: Fırsat (varlık al), Pazar (değer kazan), Masraf (gider artar), Kriz (beklenmedik şoklar). Hedef: pasif gelirini toplam giderinin üstüne çıkarmak!']
+  };
+  document.getElementById('modal-baslik').textContent = icerikler[tip][0];
+  document.getElementById('modal-metin').textContent = icerikler[tip][1];
+  document.getElementById('modal-aksiyon').textContent = tip === 'odeme' ? 'Ödemeye Git' : 'Anladım';
+  document.getElementById('modal').classList.add('aktif');
+}
+
+function modalKapat() {
+  document.getElementById('modal').classList.remove('aktif');
+  durum = { gelir:8500, gider:6200, varlik:0, pasifGelir:0, varliklar:[], yukumlulukler:[{ad:'Kira ödemesi',miktar:2000},{ad:'Araba kredisi',miktar:800},{ad:'Kredi kartı',miktar:500}] };
+  hudGuncelle();
+  varliklarGuncelle();
+}
+
+// Başlangıç
+tahtayiOlustur();
+hudGuncelle();
+varliklarGuncelle();
+</script>
+
+</body>
+</html>

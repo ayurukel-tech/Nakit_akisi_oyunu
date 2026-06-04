@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Vercel Yükleme Rehberi</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f8f8f4;color:#1a1a0a;line-height:1.6}
+.header{background:#0a0a0a;color:#d4a017;padding:1.5rem 2rem;font-size:1.4rem;font-weight:bold}
+.header span{color:#4a7c3f}
+.container{max-width:780px;margin:0 auto;padding:2rem 1rem}
+.adim{background:#fff;border:1px solid #e0dcc8;border-radius:10px;padding:1.5rem;margin-bottom:1.5rem;position:relative}
+.adim-numara{position:absolute;top:-16px;left:20px;background:#d4a017;color:#0a0a00;font-weight:bold;font-size:13px;padding:4px 14px;border-radius:20px}
+.adim h2{font-size:1.1rem;color:#0a0a00;margin-bottom:0.8rem;margin-top:0.5rem}
+.adim p{font-size:14px;color:#3a3a2a;margin-bottom:0.5rem}
+.adim ul{padding-left:1.2rem;margin-bottom:0.5rem}
+.adim ul li{font-size:14px;color:#3a3a2a;margin-bottom:4px}
+.ekran{background:#1a1a1a;border-radius:8px;padding:1rem;margin:0.8rem 0;font-family:monospace;font-size:13px;color:#d4d4b0}
+.ekran .yorum{color:#5a7a5a}
+.ekran .vurgu{color:#d4a017}
+.not{background:#fff8e0;border-left:3px solid #d4a017;padding:10px 14px;font-size:13px;color:#5a4a00;margin:0.8rem 0;border-radius:0 6px 6px 0}
+.basari{background:#e8f5e0;border-left:3px solid #4a7c3f;padding:10px 14px;font-size:13px;color:#1a4a0a;margin:0.8rem 0;border-radius:0 6px 6px 0}
+.resim-yer{background:#f0f0e8;border:2px dashed #c0b880;border-radius:8px;padding:20px;text-align:center;color:#8a8a5a;font-size:13px;margin:0.8rem 0}
+.btn-link{display:inline-block;background:#d4a017;color:#0a0a00;padding:8px 18px;border-radius:5px;text-decoration:none;font-weight:bold;font-size:13px;margin-top:8px}
+.ozet{background:#0a1205;border-radius:10px;padding:1.5rem;color:#d0e8c0;margin-bottom:1.5rem}
+.ozet h3{color:#d4a017;margin-bottom:0.8rem}
+.ozet ul{padding-left:1rem}
+.ozet ul li{font-size:14px;margin-bottom:6px;color:#a0c890}
+</style>
+</head>
+<body>
+<div class="header">Nakit Akışı Oyunu — <span>Vercel Yükleme Rehberi</span></div>
+<div class="container">
+
+<div class="ozet">
+  <h3>📋 Genel Bakış</h3>
+  <ul>
+    <li>✅ Toplam süre: ~45 dakika</li>
+    <li>✅ Gereken: Bilgisayar + internet + Gmail hesabı</li>
+    <li>✅ Maliyet: Tamamen ücretsiz</li>
+    <li>✅ Teknik bilgi: Hiç gerekmez</li>
+  </ul>
+</div>
+
+<!-- ADIM 1 -->
+<div class="adim">
+  <div class="adim-numara">ADIM 1 — 5 dakika</div>
+  <h2>GitHub Hesabı Aç</h2>
+  <p>GitHub, dosyalarını sakladığın ücretsiz bir platform. Vercel, dosyaları buradan alır.</p>
+  <ol style="padding-left:1.2rem;margin-bottom:0.5rem">
+    <li style="font-size:14px;margin-bottom:6px"><strong>github.com</strong> adresine git</li>
+    <li style="font-size:14px;margin-bottom:6px">"Sign up" butonuna tıkla (sağ üst köşe)</li>
+    <li style="font-size:14px;margin-bottom:6px">Email adresini gir → Şifre oluştur → Kullanıcı adı seç</li>
+    <li style="font-size:14px;margin-bottom:6px">Email doğrulama kodunu gir</li>
+    <li style="font-size:14px;margin-bottom:6px">Karşına çıkan seçeneklerde "Free" planı seç</li>
+  </ol>
+  <div class="basari">✅ Başarı: Ana sayfanı görüyorsun — hesabın aktif.</div>
+</div>
+
+<!-- ADIM 2 -->
+<div class="adim">
+  <div class="adim-numara">ADIM 2 — 5 dakika</div>
+  <h2>Yeni Repository (Klasör) Oluştur</h2>
+  <p>Repository = GitHub'daki proje klasörün. Oyun dosyaları buraya gidecek.</p>
+  <ol style="padding-left:1.2rem;margin-bottom:0.5rem">
+    <li style="font-size:14px;margin-bottom:6px">GitHub'da giriş yaptıktan sonra sağ üstteki <strong>"+"</strong> simgesine tıkla</li>
+    <li style="font-size:14px;margin-bottom:6px"><strong>"New repository"</strong> seç</li>
+    <li style="font-size:14px;margin-bottom:6px">Repository name: <code style="background:#f0f0e8;padding:2px 6px;border-radius:3px">nakit-akisi-oyunu</code></li>
+    <li style="font-size:14px;margin-bottom:6px"><strong>Public</strong> seçeneğini işaretle (Vercel ücretsiz için gerekli)</li>
+    <li style="font-size:14px;margin-bottom:6px">"Add a README file" kutusunu işaretle</li>
+    <li style="font-size:14px;margin-bottom:6px">Yeşil <strong>"Create repository"</strong> butonuna tıkla</li>
+  </ol>
+  <div class="basari">✅ Başarı: github.com/KULLANICI_ADIN/nakit-akisi-oyunu sayfasını görüyorsun.</div>
+</div>
+
+<!-- ADIM 3 -->
+<div class="adim">
+  <div class="adim-numara">ADIM 3 — 5 dakika</div>
+  <h2>oyun.html Dosyasını GitHub'a Yükle</h2>
+  <p>Bu paketteki <strong>oyun.html</strong> dosyasını GitHub'daki klasörüne yükle.</p>
+  <ol style="padding-left:1.2rem;margin-bottom:0.5rem">
+    <li style="font-size:14px;margin-bottom:6px">Repository sayfasında <strong>"Add file"</strong> butonuna tıkla</li>
+    <li style="font-size:14px;margin-bottom:6px"><strong>"Upload files"</strong> seç</li>
+    <li style="font-size:14px;margin-bottom:6px">oyun.html dosyasını sürükle-bırak veya "choose your files" ile seç</li>
+    <li style="font-size:14px;margin-bottom:6px">Alttaki yeşil <strong>"Commit changes"</strong> butonuna tıkla</li>
+  </ol>
+  <div class="not">💡 oyun.html dosyası bu paketle birlikte geldi. Masaüstünde veya İndirilenler klasöründe bulabilirsin.</div>
+  <div class="basari">✅ Başarı: Repository'de oyun.html dosyasını görüyorsun.</div>
+</div>
+
+<!-- ADIM 4 -->
+<div class="adim">
+  <div class="adim-numara">ADIM 4 — 2 dakika</div>
+  <h2>index.html Ekle (Önemli!)</h2>
+  <p>Vercel, siteyi açmak için <strong>index.html</strong> arar. oyun.html'i index.html olarak da yüklemen gerekiyor.</p>
+  <ol style="padding-left:1.2rem;margin-bottom:0.5rem">
+    <li style="font-size:14px;margin-bottom:6px">Bilgisayarında oyun.html dosyasını kopyala</li>
+    <li style="font-size:14px;margin-bottom:6px">Kopyasının adını <strong>index.html</strong> olarak değiştir</li>
+    <li style="font-size:14px;margin-bottom:6px">Aynı şekilde GitHub'a yükle (Add file → Upload files)</li>
+  </ol>
+  <div class="basari">✅ Başarı: Repository'de hem oyun.html hem index.html var.</div>
+</div>
+
+<!-- ADIM 5 -->
+<div class="adim">
+  <div class="adim-numara">ADIM 5 — 10 dakika</div>
+  <h2>Vercel Hesabı Aç ve Projeyi Yükle</h2>
+  <p>Vercel, sitenin internette yayınlanacağı platform. Tamamen ücretsiz.</p>
+  <ol style="padding-left:1.2rem;margin-bottom:0.5rem">
+    <li style="font-size:14px;margin-bottom:6px"><strong>vercel.com</strong> adresine git</li>
+    <li style="font-size:14px;margin-bottom:6px"><strong>"Sign Up"</strong> → <strong>"Continue with GitHub"</strong> tıkla (Gmail ile GitHub açtıysan otomatik bağlanır)</li>
+    <li style="font-size:14px;margin-bottom:6px">Ana sayfada <strong>"Add New Project"</strong> butonuna tıkla</li>
+    <li style="font-size:14px;margin-bottom:6px">Sol tarafta GitHub repository'lerini görürsün. <strong>"nakit-akisi-oyunu"</strong> yanındaki <strong>"Import"</strong> butonuna tıkla</li>
+    <li style="font-size:14px;margin-bottom:6px">Proje ayarlarını değiştirme, olduğu gibi bırak</li>
+    <li style="font-size:14px;margin-bottom:6px">Mavi <strong>"Deploy"</strong> butonuna tıkla</li>
+    <li style="font-size:14px;margin-bottom:6px">2 dakika bekle — konfeti animasyonu çıkacak!</li>
+  </ol>
+  <div class="ekran">
+    <span class="yorum">// Vercel sana şöyle bir link verir:</span><br>
+    <span class="vurgu">https://nakit-akisi-oyunu.vercel.app</span><br>
+    <span class="yorum">// Bu link hemen çalışır, herkese açık.</span>
+  </div>
+  <div class="basari">✅ Başarı: Konfeti gördün, linke tıkladında oyun açılıyor!</div>
+</div>
+
+<!-- ADIM 6 -->
+<div class="adim">
+  <div class="adim-numara">ADIM 6 — 15 dakika (İsteğe bağlı)</div>
+  <h2>Kendi Alan Adını Bağla</h2>
+  <p>vercel.app uzantısı yerine kendi alan adını (nakit-akisi-oyunu.com.tr) bağlamak istersen:</p>
+  <ol style="padding-left:1.2rem;margin-bottom:0.5rem">
+    <li style="font-size:14px;margin-bottom:6px">Vercel'de projenin sayfasına git → <strong>"Settings"</strong> → <strong>"Domains"</strong></li>
+    <li style="font-size:14px;margin-bottom:6px">Alan adını yaz ve <strong>"Add"</strong> tıkla</li>
+    <li style="font-size:14px;margin-bottom:6px">Vercel sana iki DNS kaydı gösterir (A kaydı ve CNAME)</li>
+    <li style="font-size:14px;margin-bottom:6px">Alan adını aldığın siteye git (Natro, İsimtescil vb.) → DNS Yönetimi</li>
+    <li style="font-size:14px;margin-bottom:6px">Vercel'in gösterdiği kayıtları buraya ekle</li>
+    <li style="font-size:14px;margin-bottom:6px">24 saat içinde alan adın aktif olur</li>
+  </ol>
+  <div class="not">💡 Alan adın yoksa şimdilik vercel.app linki yeterli. İlk müşterileri bu linkle de kazanabilirsin.</div>
+</div>
+
+<!-- ADIM 7 -->
+<div class="adim">
+  <div class="adim-numara">ADIM 7 — Güncelleme Nasıl Yapılır?</div>
+  <h2>Oyunu Güncellemek İstersen</h2>
+  <p>Oyunda değişiklik yapmak istediğinde Vercel'e tekrar girmen gerekmez. Sadece GitHub'a yeni dosya yükle — Vercel otomatik günceller!</p>
+  <ol style="padding-left:1.2rem;margin-bottom:0.5rem">
+    <li style="font-size:14px;margin-bottom:6px">Bilgisayarında oyun.html dosyasını Not Defteri ile aç ve değişikliği yap</li>
+    <li style="font-size:14px;margin-bottom:6px">Kaydet</li>
+    <li style="font-size:14px;margin-bottom:6px">GitHub'daki repository'ye git</li>
+    <li style="font-size:14px;margin-bottom:6px">index.html üzerine tıkla → sağ üstteki kalem (✏️) simgesine tıkla → içeriği sil, yeni kodu yapıştır → "Commit changes"</li>
+    <li style="font-size:14px;margin-bottom:6px">Vercel 1-2 dakika içinde otomatik günceller</li>
+  </ol>
+  <div class="basari">✅ Bu kadar! Artık sitenin sahibisin.</div>
+</div>
+
+<div class="ozet">
+  <h3>🎉 Tebrikler! Yapman gereken her şey bu.</h3>
+  <ul>
+    <li>✅ GitHub hesabı açıldı</li>
+    <li>✅ oyun.html + index.html yüklendi</li>
+    <li>✅ Vercel'e deploy edildi</li>
+    <li>✅ Site canlıda ve erişilebilir</li>
+    <li>⬜ Alan adı bağla (opsiyonel, sonra da yapılabilir)</li>
+    <li>⬜ Gumroad'a kayıt ol ve abonelik ürününü oluştur</li>
+    <li>⬜ İlk TikTok videonu yayınla</li>
+  </ul>
+</div>
+
+</div>
+</body>
+</html>
